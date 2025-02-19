@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Czasu Pracy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Wprowadź godzinę rozpoczęcia</h2>
+        <input type="time" id="timeInput">
+        <button onclick="calculateTimes()">Oblicz</button>
+        <div class="result" id="output"></div>
+    </div>
+
+    <script>
+        function calculateTimes() {
+            const timeInput = document.getElementById("timeInput").value;
+            
+            if (!timeInput) {
+                alert("Wybierz godzinę!");
+                return;
+            }
+
+            // Parsowanie godziny wejściowej
+            let [hours, minutes] = timeInput.split(":").map(Number);
+            let baseTime = new Date();
+            baseTime.setHours(hours, minutes, 0, 0);
+
+            // Funkcja pomocnicza do formatowania czasu
+            function formatTime(date) {
+                return date.toTimeString().slice(0, 5);
+            }
+
+            // Obliczenia
+            let work13h = new Date(baseTime.getTime() + 13 * 60 * 60 * 1000);
+            let work15h = new Date(baseTime.getTime() + 15 * 60 * 60 * 1000);
+            let break9h = new Date(baseTime.getTime() + 9 * 60 * 60 * 1000);
+            let break11h = new Date(baseTime.getTime() + 11 * 60 * 60 * 1000);
+
+            // Wyświetlanie wyników
+            document.getElementById("output").innerHTML = `
+                <p><strong>Czasy Pracy:</strong></p>
+                <p>13h: ${formatTime(work13h)}</p>
+                <p>15h: ${formatTime(work15h)}</p>
+                <p><strong>Pauzy:</strong></p>
+                <p>9h: ${formatTime(break9h)}</p>
+                <p>11h: ${formatTime(break11h)}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
